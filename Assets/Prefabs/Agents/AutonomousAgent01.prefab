@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8439026320716926553}
   - component: {fileID: 5958846872921058224}
   - component: {fileID: 5092153386340224227}
+  - component: {fileID: -7397719947933339478}
   - component: {fileID: 4569045905938551472}
   - component: {fileID: 7717630590506003303}
   m_Layer: 8
@@ -55,7 +56,7 @@ MonoBehaviour:
   seekPerception: {fileID: 0}
   fleePerception: {fileID: 8439026320716926553}
   flockPerception: {fileID: 5958846872921058224}
-  obstaclePerception: {fileID: 5092153386340224227}
+  obstaclePerception: {fileID: -7397719947933339478}
 --- !u!114 &8920102042170506053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,6 +128,26 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   numRaycast: 5
+--- !u!114 &-7397719947933339478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758577507074575387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68040a7734ca41c428d201e4bca6b0f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tagName: 
+  distance: 5
+  maxAngle: 80
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  numRaycast: 5
+  radius: 0.2
 --- !u!135 &4569045905938551472
 SphereCollider:
   m_ObjectHideFlags: 0
