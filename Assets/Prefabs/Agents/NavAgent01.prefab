@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9a96b80989d69449ab839832bc0c069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pathType: 0
   startNode: {fileID: 0}
 --- !u!114 &6852485758620128830
 MonoBehaviour:
@@ -182,6 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9a96b80989d69449ab839832bc0c069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pathType: 0
   startNode: {fileID: 0}
 --- !u!54 &3863578545182960957
 Rigidbody:

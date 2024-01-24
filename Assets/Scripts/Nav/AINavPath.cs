@@ -3,9 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(AINavAgent))]
 public class AINavPath : MonoBehaviour
 {
+	public enum ePathType
+    {
+		Waypoint,
+		Dijkstra,
+		AStar
+    }
+
+	[SerializeField] private ePathType pathType;
 	[SerializeField] private AINavNode startNode;
+	[SerializeField] private AINavNode endNode;
+
+	AINavAgent agent;
+	List<AINavNode> path = new();
 
 	public AINavNode targetNode { get; set; } = null;
 	public Vector3 destination 
@@ -13,44 +26,56 @@ public class AINavPath : MonoBehaviour
 		get 
 		{ 
 			return (targetNode != null) ? targetNode.transform.position : Vector3.zero; 
-		} 
+		}
+        set
+        {
+			if (pathType == ePathType.Waypoint)
+            {
+				targetNode = agent.GetNearestAINavNode(value);
+            }
+			else if (pathType == ePathType.Dijkstra || pathType == ePathType.AStar)
+            {
+				GeneratePath(startNode, endNode);
+            }
+        }
 	}
 
 	private void Start()
 	{
+		agent = GetComponent<AINavAgent>();
 		targetNode = (startNode != null) ? startNode : AINavNode.GetRandomAINavNode(); 
-		
 	}
 
-	public bool HasPath()
+	public bool HasTarget()
 	{
 		return targetNode != null;
 	}
 
 	public AINavNode GetNextAINavNode(AINavNode node)
 	{
-		return node.GetRandomNeighbor();
+		if (pathType == ePathType.Waypoint) return node.GetRandomNeighbor();
+		if (pathType == ePathType.Dijkstra || pathType == ePathType.AStar) return GetNextPathAINavNode(node);
+
+		else return null;
 	}
 
-	/*
-	public AINavNode GetNearestAINavNode()
-	{
-		var nodes = AINavNode.GetAINavNodes().ToList();
-		SortAINavNodesByDistance(nodes);
+	private void GeneratePath(AINavNode startNode, AINavNode endNode)
+    {
+		AINavNode.ResetNodes();
+		AINavDijkstra.Generate(startNode, endNode, ref path);
+    }
 
-		return (nodes.Count == 0) ? null : nodes[0];
-	}
+	private AINavNode GetNextPathAINavNode(AINavNode node)
+    {
+		if (path.Count == 0) return null;
 
-	public void SortAINavNodesByDistance(List<AINavNode> nodes)
-	{
-		nodes.Sort(CompareDistance);
-	}
+		int index = path.FindIndex(pathNode => pathNode == node);
 
-	public int CompareDistance(AINavNode a, AINavNode b)
-	{
-		float squaredRangeA = (a.transform.position - transform.position).sqrMagnitude;
-		float squaredRangeB = (b.transform.position - transform.position).sqrMagnitude;
-		return squaredRangeA.CompareTo(squaredRangeB);
-	}
-	*/
+		if (index + 1 == path.Count) return null;
+
+		AINavNode nextNode = path[index + 1];
+			 
+		return null;
+    }
+
 }
