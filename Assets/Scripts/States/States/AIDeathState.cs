@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AIDeathState : AIState
 {
+    float timer = 0;
+
     public AIDeathState(AIStateAgent agent) : base(agent)
     {
 
@@ -11,15 +13,19 @@ public class AIDeathState : AIState
 
     public override void OnEnter()
     {
-
-    }
-
-    public override void OnExit()
-    {
-
+        agent.animator?.SetTrigger("Death");
+        timer = Time.time + 2;
     }
 
     public override void OnUpdate()
+    {
+        if (Time.time >= timer)
+        {
+            GameObject.Destroy(agent.gameObject);
+        }
+    }
+
+    public override void OnExit()
     {
 
     }

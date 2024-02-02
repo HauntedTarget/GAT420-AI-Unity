@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AIAttackState : AIState
 {
+    float timer = 0;
+
     public AIAttackState(AIStateAgent agent) : base(agent)
     {
 
@@ -11,7 +13,8 @@ public class AIAttackState : AIState
 
     public override void OnEnter()
     {
-        Debug.Log("Attack Enter");
+        agent.animator?.SetTrigger("Attack");
+        timer = Time.time + 2;
     }
 
     public override void OnExit()
@@ -21,6 +24,9 @@ public class AIAttackState : AIState
 
     public override void OnUpdate()
     {
-        Debug.Log("Attack Update");
+        if (Time.time >= timer)
+        {
+            agent.stateMachine.SetState(nameof(AIIdleState));
+        }
     }
 }
