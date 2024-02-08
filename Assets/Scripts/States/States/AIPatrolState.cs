@@ -4,32 +4,34 @@ using UnityEngine;
 
 public class AIPatrolState : AIState
 {
-    Vector3 destination;
-
     public AIPatrolState(AIStateAgent agent) : base(agent)
     {
+        AIStateTransition transition = new(nameof(AIIdleState));
+        transition.AddCondition(new FloatCondition(agent.destinationDistance, Condition.Predicate.LESS, 1));
+        transitions.Add(transition);
+
+        transition = new(nameof(AIChaseState));
+        transition.AddCondition(new BoolCondition(agent.enemySeen));
+        transitions.Add(transition);
+
 
     }
 
     public override void OnEnter()
     {
-        destination = AINavNode.GetRandomAINavNode().transform.position;
+        agent.movement.Resume();
+
+        agent.movement.Destination = AINavNode.GetRandomAINavNode().transform.position;
     }
 
     public override void OnUpdate()
     {
         // Move to random node in patrol
-        agent.movement.MoveTowards(destination);
-
-        // On arival, Idle
-        if (Vector3.Distance(destination, agent.transform.position) < 1) agent.stateMachine.SetState(nameof(AIIdleState));
-
-        var enemies = agent.enemyPerception.GetGameobjects();
-        if (enemies.Length > 0) agent.stateMachine.SetState(nameof(AIChaseState));
+        agent.movement.MoveTowards(agent.movement.Destination);
     }
 
     public override void OnExit()
     {
-
+        Debug.Log("Patrol Exit");
     }
 }
